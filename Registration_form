@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+    <?php
+    // Function to sanitize input data
+    function sanitize_input($data) {
+        return htmlspecialchars(stripslashes(trim($data)));
+    }
+
+    // Initialize variables
+    $firstname = $age = $gender = $motto = "";
+    $error = "";
+
+    // Check if form is submitted using POST
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Sanitize and assign inputs
+        $firstname = sanitize_input($_POST["firstname"]);
+        $age = sanitize_input($_POST["age"]);
+        $gender = sanitize_input($_POST["gender"]);
+        $motto = sanitize_input($_POST["motto"]);
+
+        // Validate all fields are filled
+        if (empty($firstname) || empty($age) || empty($gender) || empty($motto)) {
+            $error = "All fields are required.";
+        } else {
+            // Display formatted output
+            echo "<h3>You are $firstname, a $age-year-old $gender. Your motto in life is: \"$motto\"</h3>";
+        }
+    }
+    ?>
+
+    <!-- Display error message if validation fails -->
+    <?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
+
+    <!-- Registration Form -->
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <label for="firstname">First Name:</label><br>
+        <input type="text" name="firstname" id="firstname" value="John Michael"><br><br>
+
+        <label for="age">Age:</label><br>
+        <input type="number" name="age" id="age" value="22"><br><br>
+
+        <label for="gender">Gender:</label><br>
+        <select name="gender" id="gender">
+            <option value="">--Select--</option>
+            <option value="Male" selected>Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
+        <label for="motto">Quote in Life:</label><br>
+        <textarea name="motto" id="motto" rows="3" cols="30">Tommorow would be better, if it isn't I'll say it again.</textarea><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
